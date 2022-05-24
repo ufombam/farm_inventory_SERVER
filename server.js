@@ -132,19 +132,51 @@ app.route('/record/feed/:user')
         .catch(() => res.status(400).json('unable to complete request'))
     })
     .post((req, res) => {
-        const { qty, store, expense, date } = req.body;
+        const { qty, store, expense, date, used } = req.body;
         const { user } = req.params;
-        db.insert({
-            date: date,
-            year: new Date().getFullYear(),
-            month: new Date().getMonth(),
-            qty: qty, 
-            store: store, 
-            expense: expense,
-            userid: user
-        }).into('feed')
-        .then(() => res.status(200).json('success'))
-        .catch((err) => res.status(400).json('unable to complete request'))
+        if (!qty && !store && !expense) {
+            db.select('*').from('feed').where('userid','=', user)
+            .then(data => {
+                const id = data[data.length-1].id;
+                db('feed')
+                .where('id', '=', id, 'AND', 'userid', '=', user)
+                .decrement({
+                    stock: used,
+                })
+                .then(() => res.status(200).json('success'))
+            }).catch(() => res.status(400).json('unable to update stock'))
+        } else {
+            db.select('*').from('feed').where('userid','=', user)
+            .then(data => {
+                if (data[data.length-1].stock !== 0) {
+                    db.insert({
+                        date: date,
+                        year: new Date().getFullYear(),
+                        month: new Date().getMonth(),
+                        qty: qty, 
+                        store: store, 
+                        expense: expense,
+                        userid: user,
+                        stock: (Number(qty) + data[data.length-1].stock) - Number(used)
+                    }).into('feed')
+                    .then(() => res.status(200).json('success'))
+                    .catch((err) => res.status(400).json('unable to complete request'))
+                } else {
+                    db.insert({
+                        date: date,
+                        year: new Date().getFullYear(),
+                        month: new Date().getMonth(),
+                        qty: qty, 
+                        store: store, 
+                        expense: expense,
+                        userid: user,
+                        stock: Number(qty) - Number(used)
+                    }).into('feed')
+                    .then(() => res.status(200).json('success'))
+                    .catch((err) => res.status(400).json('unable to complete request'))
+                }
+            }).catch(() => res.status(400).json('Unable to complete request'))
+        }
     });
 
 
@@ -158,17 +190,57 @@ app.route('/record/bird/:user')
         .catch(() => res.status(400).json('unable to complete request'))
     })
     .post((req, res) => {
-        const { bird, store, dead, date } = req.body;
+        const { bird, store, dead, date, culled } = req.body;
         const { user } = req.params;
-        db.insert({ 
-            date: date,
-            birds: bird,
-            store: store,
-            dead_birds: dead,
-            userid: user
-        }).into('bird')
-        .catch(() => res.status(400).json('unable to submit'))
-    });
+        if ((!bird && !store) && (dead || culled)) {
+            db.select('*').from('bird').where('userid', '=', user)
+            .then(data => {
+                const oldStock = data[data.length-1].stock;
+                const oldCulled = data[data.length-1].culled;
+                const oldDead = data[data.length-1].dead_birds;
+                db.insert({
+                    date: date,
+                    birds: 0,
+                    store: 'MORTALITY',
+                    dead_birds: (Number(dead) || 0) + (oldDead || 0),
+                    userid: user,
+                    culled: (Number(culled) || 0) + (oldCulled || 0),
+                    stock: (oldStock || 0) - (Number(dead) || 0)
+                }).into('bird').then(() => res.status(200).json('success'))
+                .catch(console.log)
+            })
+        }
+        db.select('*').from('bird').where('userid', '=', user)
+        .then(data => {
+            const isDataValid = data.length;
+            if(isDataValid > 0) {
+                const oldStock = data[data.length-1].stock;
+                const oldCulled = data[data.length-1].culled;
+                const oldDead = data[data.length-1].dead_birds;
+                db.insert({
+                    date: date,
+                    birds: bird,
+                    store: store,
+                    dead_birds: (Number(dead) || 0) + (oldDead),
+                    userid: user,
+                    culled: (Number(culled) || 0) + (oldCulled),
+                    stock: (oldStock - (Number(dead) || 0)) + Number(bird)
+                }).into('bird').then(() => res.status(200).json('success'))
+                .catch(console.log)
+            } else {
+                db.insert({
+                    date: date,
+                    birds: bird,
+                    store: store,
+                    dead_birds: dead,
+                    userid: user,
+                    culled: culled,
+                    stock: bird
+                }).into('bird').then(() => res.status(200).json('success'))
+                .catch(console.log)
+            }
+        }).catch(() => res.status(400).json('request failed'))
+    })
 
 app.route('/record/names/:user')
     .get((req, res) => {
@@ -212,6 +284,14 @@ app.route('/record/customers/:user')
             debt: debt,
         })
         .catch(() => res.status(400).json('unable to submit'))
+    })
+    .delete((req, res) => {
+        const { name } = req.body;
+        const { user } = req.params;
+        db('customers')
+        .where('name', '=', name, 'AND', 'userid', '=', user)
+        .del()
+        .catch(() => res.status(400).json('operation failed'))
     });
 
 app.route('/record/compost/:user')
@@ -248,14 +328,15 @@ app.route('/record/msc/:user')
         .catch(() => res.status(400).json('unable to complete request'))
     })
     .post((req, res) => {
-        const { expense, purpose, date } = req.body;
+        const { expense, purpose, date, description } = req.body;
         const { user } = req.params;
         db.insert({
             date: date,
             year: new Date().getFullYear(),
             month: new Date().getMonth(),
             purpose: purpose,
-            expense: expense, 
+            expense: expense,
+            description: description, 
             userid: user
         }).into('miscellaneous')
         .catch(() => res.status(400).json('unable to submit'))
