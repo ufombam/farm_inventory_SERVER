@@ -36,7 +36,7 @@ app.use(cors({
 }));
 
 
-app.get('/', (req, res) => res.send('App is working'))
+app.get('/', (req, res) => res.json('App is working'))
 
 //======================== ENDPOINT FOR SIGN-IN=======================
 app.route('/signin')
