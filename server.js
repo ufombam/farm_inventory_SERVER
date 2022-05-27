@@ -32,6 +32,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get('/', (req, res) => res.send('App is working'))
+
 //======================== ENDPOINT FOR SIGN-IN=======================
 app.route('/signin')
     .post((req, res) => {signin.handleSignin(req, res, db, bcrypt)})
