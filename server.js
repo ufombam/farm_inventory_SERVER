@@ -25,17 +25,12 @@ const db = knex({
     client: 'pg',
     connection: {
         connectionString : process.env.DATABASE_URL,
-        ssl:  {
-            rejectUnauthorized: false
-        }
+        ssl:  true
     }
 });
 const app = express();
 app.use(express.json());
-app.use(cors({
-    origin: 'https://majestic-conkies-cd1bd9.netlify.app',
-    methods: ['GET','POST','DELETE','UPDATE','PUT']
-}));
+app.use(cors());
 
 
 app.get('/', (req, res) => res.json('App is working'))
