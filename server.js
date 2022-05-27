@@ -31,7 +31,7 @@ const db = knex({
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin: ['https://fast-scrubland-53064.herokuapp.com/'],
+    origin: 'https://majestic-conkies-cd1bd9.netlify.app',
     methods: ['GET','POST','DELETE','UPDATE','PUT']
 }));
 
