@@ -30,7 +30,11 @@ const db = knex({
 });
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ['https://fast-scrubland-53064.herokuapp.com/'],
+    methods: ['GET','POST','DELETE','UPDATE','PUT']
+}));
+
 
 app.get('/', (req, res) => res.send('App is working'))
 

@@ -21,7 +21,13 @@ const handleRegister = (req, res, db, bcrypt) => {
                 joined: new Date()
             },['*']).into('users')
         })
-        .then(user => res.status(200).json(user[0]))
+        .then(user => {
+            if (!user.length) {
+                return res.status(400).end('unable to register')
+            } {
+                return res.status(200).json(user[0])
+            }
+        })
         .then(trx.commit)
         .catch(trx.rollback)
     })
