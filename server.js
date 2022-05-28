@@ -17,6 +17,7 @@ const { handleGetCompost_f } = require('./controllers/finance/compost');
 const { handleGetFeed_f } = require('./controllers/finance/feed');
 const { handleGetMsc_f } = require('./controllers/finance/msc');
 const { handleGetDebt_f } = require('./controllers/finance/debt');
+const { response } = require('express');
 
 
 
@@ -34,7 +35,11 @@ app.use(express.json());
 app.use(cors());
 
 
-app.get('/', (req, res) => res.json('App is working'))
+app.get('/', (req, res) => {
+    return db.select('*').from('users')
+    .then(data => res.status(200).json(data))
+    .catch(err => console.log(err))
+})
 
 //======================== ENDPOINT FOR SIGN-IN=======================
 app.route('/signin')
