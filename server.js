@@ -20,7 +20,6 @@ const { handleGetDebt_f } = require('./controllers/finance/debt');
 
 
 
-
 const db = knex({
     client: 'pg',
     connection: {
