@@ -31,7 +31,9 @@ const db = knex({
 });
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'https://ubird-ng.herokuapp.com'
+}));
 
 
 app.get('/', (req, res) => res.json('App is working'))
