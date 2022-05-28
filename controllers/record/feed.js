@@ -4,7 +4,10 @@ const handleGetFeed = (req, res, db) => {
     .then(data => {
         return res.status(200).json(data)
     })
-    .catch(() => res.status(400).json('unable to complete request'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 const handlePostFeed = (req, res, db) => {
@@ -20,7 +23,10 @@ const handlePostFeed = (req, res, db) => {
                 stock: used,
             })
             .then(() => res.status(200).json('success'))
-        }).catch(() => res.status(400).json('unable to update stock'))
+        }).catch((err) => {
+            console.log(err)
+            return res.status(400).json('unable to complete request')
+        })
     } else {
         db.select('*').from('feed').where('userid','=', user)
         .then(data => {
@@ -36,7 +42,10 @@ const handlePostFeed = (req, res, db) => {
                     stock: (Number(qty) + data[data.length-1].stock) - Number(used)
                 }).into('feed')
                 .then(() => res.status(200).json('success'))
-                .catch((err) => res.status(400).json('unable to complete request'))
+                .catch((err) => {
+                    console.log(err)
+                    return res.status(400).json('unable to complete request')
+                })
             } else {
                 db.insert({
                     date: date,
@@ -49,9 +58,15 @@ const handlePostFeed = (req, res, db) => {
                     stock: Number(qty) - Number(used)
                 }).into('feed')
                 .then(() => res.status(200).json('success'))
-                .catch((err) => res.status(400).json('unable to complete request'))
+                .catch((err) => {
+                    console.log(err)
+                    return res.status(400).json('unable to complete request')
+                })
             }
-        }).catch(() => res.status(400).json('Unable to complete request'))
+        }).catch((err) => {
+            console.log(err)
+            return res.status(400).json('unable to complete request')
+        })
     }
 }
 

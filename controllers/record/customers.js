@@ -4,7 +4,10 @@ const handleGetCustomers = (req, res, db) => {
     .then(data => {
         return res.json(data)
     })
-    .catch(() => res.status(400).json('unable to complete request'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 const handlePostCustomers = (req, res, db) => {
@@ -18,7 +21,10 @@ const handlePostCustomers = (req, res, db) => {
         userid: user
     }).into('customers')
     .then(() => res.status(200).json('Customer data created'))
-    .catch(() => res.status(400).json('Unable to submit'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 const handlePutCustomers = (req, res, db) => {
@@ -30,7 +36,10 @@ const handlePutCustomers = (req, res, db) => {
         purchases: qty,
         debt: debt,
     })
-    .catch(() => res.status(400).json('unable to submit'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 const handleDeleteCustomers = (req, res, db) => {
@@ -39,7 +48,10 @@ const handleDeleteCustomers = (req, res, db) => {
     db('customers')
     .where('name', '=', name, 'AND', 'userid', '=', user)
     .del()
-    .catch(() => res.status(400).json('operation failed'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('operation failed')
+    })
 }
 
 module.exports = {

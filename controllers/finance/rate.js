@@ -14,7 +14,10 @@ const handlePostRate_f = (req, res, db) => {
         big: big,  
         small: small, 
     }).where('userid', '=', user)
-    .catch(() => res.status(400).json('unable to submit'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 module.exports = {

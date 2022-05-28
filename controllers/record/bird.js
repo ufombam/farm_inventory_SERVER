@@ -4,7 +4,10 @@ const handleGetBird = (req, res, db) => {
     .then(data => {
         return res.status(200).json(data)
     })
-    .catch(() => res.status(400).json('unable to complete request'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 const handlePostBird = (req, res, db) => {
@@ -57,7 +60,10 @@ const handlePostBird = (req, res, db) => {
             }).into('bird').then(() => res.status(200).json('success'))
             .catch(console.log)
         }
-    }).catch(() => res.status(400).json('request failed'))
+    }).catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 module.exports = {

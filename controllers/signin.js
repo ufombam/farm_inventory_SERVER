@@ -15,7 +15,7 @@ const handleSignin = (req, res, db, bcrypt) => {
         }
     }
     }).catch((err) => {
-        console.log(er)
+        console.log(err)
         return res.json(400).json('unable to Sign in')
     })
 }

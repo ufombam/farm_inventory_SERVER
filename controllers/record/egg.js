@@ -4,7 +4,10 @@ const handleGetEgg = (req, res, db) => {
     .then(data => {
         return res.json(data)
     })
-    .catch(() => res.status(400).json('unable to complete request'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 const handlePostEgg = (req, res, db) => {
@@ -20,7 +23,10 @@ const handlePostEgg = (req, res, db) => {
         userid: user
     }).into('egg_records')
     .then(res => res.status(200).json('success'))
-    .catch(() => res.status(400).json('unable to submit'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 module.exports = {

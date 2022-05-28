@@ -4,7 +4,10 @@ const handleGetMsc = (req, res, db) => {
     .then(data => {
         return res.json(data)
     })
-    .catch(() => res.status(400).json('unable to complete request'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 const handlePostMsc = (req, res, db) => {
     const { expense, purpose, date, description } = req.body;
@@ -18,7 +21,10 @@ const handlePostMsc = (req, res, db) => {
         description: description, 
         userid: user
     }).into('miscellaneous')
-    .catch(() => res.status(400).json('unable to submit'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 module.exports = {

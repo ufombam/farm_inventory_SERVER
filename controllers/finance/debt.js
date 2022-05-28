@@ -6,7 +6,10 @@ const handleGetDebt_f = (req, res, db) => {
     .then(data => {
         return res.json(data)
     })
-    .catch(() => res.status(400).json('unable to complete request'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 module.exports = {

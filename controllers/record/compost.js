@@ -4,7 +4,10 @@ const handleGetCompost = (req, res, db) => {
     .then(data => {
         return res.json(data)
     })
-    .catch(() => res.status(400).json('unable to complete request'))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 const handlePostCompost = (req, res, db) => {
@@ -19,7 +22,10 @@ const handlePostCompost = (req, res, db) => {
         userid: user
     }).into('compost')
     .then(() => res.status(200).json('Submitted'))
-    .catch(err => console.log(err))
+    .catch((err) => {
+        console.log(err)
+        return res.status(400).json('unable to complete request')
+    })
 }
 
 module.exports = {
