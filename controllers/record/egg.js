@@ -22,7 +22,7 @@ const handlePostEgg = (req, res, db) => {
         date: date,
         userid: user
     }).into('egg_records')
-    .then(res => res.status(200).json('success'))
+    .then(data => res.status(200).json('success'))
     .catch((err) => {
         console.log(err)
         return res.status(400).json('unable to complete request')
