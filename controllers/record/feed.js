@@ -30,7 +30,7 @@ const handlePostFeed = (req, res, db) => {
     } else {
         db.select('*').from('feed').where('userid','=', user)
         .then(data => {
-            if (data[data.length-1]?.stock !== 0) {
+            if (data[data.length-1]?.stock && data[data.length-1]?.stock !== 0) {
                 db.insert({
                     date: date,
                     year: new Date().getFullYear(),
