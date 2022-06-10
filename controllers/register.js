@@ -4,22 +4,22 @@ const handleRegister = (req, res, db, bcrypt) => {
     const hash = bcrypt.hashSync(pwd, salt);
     db.transaction(trx => {
         return trx.insert({
-            hash: hash,
-            email: email
-        },['id']).into('login')
+            name: name,
+            email: email,
+            joined: new Date()
+        },['*']).into('users')
+        .then(id => {
+            return trx.insert({
+                hash: hash,
+                email: email
+            }).into('login')
+        })
         .then(id => {
             return trx.insert({
                 userid: id[0].id,
                 big: 0,
                 small: 0
             }).into('rate')
-        })
-        .then(() => {
-            return trx.insert({
-                name: name,
-                email: email,
-                joined: new Date()
-            },['*']).into('users')
         })
         .then(user => {
             if (!user.length) {
