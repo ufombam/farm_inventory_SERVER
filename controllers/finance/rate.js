@@ -16,7 +16,7 @@ const handlePostRate_f = (req, res, db) => {
     db('rate').update({
         big: big,  
         small: small, 
-    }).where('userid', '=', user)
+    }).where('userid', '=', user).then(data => res.status(200).json(data))
     .catch((err) => {
         console.log(err)
         return res.status(400).json('unable to complete request')
