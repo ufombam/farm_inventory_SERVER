@@ -9,21 +9,18 @@ const handleRegister = (req, res, db, bcrypt) => {
             joined: new Date()
         },['*']).into('users')
         .then(id => {
-            console.log(id)
+            trx.insert({
+                userid: id[0].id,
+                big: 0,
+                small: 0
+            }).into('rate')
             return trx.insert({
                 hash: hash,
                 email: email
             }).into('login')
         })
-        .then(id => {
-            console.log(id)
-            return trx.insert({
-                userid: id[0].id,
-                big: 0,
-                small: 0
-            }).into('rate')
-        })
         .then(user => {
+            console.log(user)
             if (!user.length) {
                 return res.status(400).end('unable to register')
             } {
