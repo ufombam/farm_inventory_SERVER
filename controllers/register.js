@@ -28,7 +28,7 @@ const handleRegister = (req, res, db, bcrypt) => {
                 if (!users.length) {
                     return res.status(400).end('unable to register')
                 } else {
-                    return res.status(200).json(users[0])
+                    return res.status(200).json(users[users.length - 1])
                 }
             })
         })
