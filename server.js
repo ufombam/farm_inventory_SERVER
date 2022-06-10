@@ -109,7 +109,7 @@ app.route('/finance/msc/:user')
     .get((req, res) => {handleGetMsc_f(req, res, db)})
 
 app.route('/finance/debt/:user')
-    .get((req, res) => {handleGetDebt_f(req, res, db)})
+    .get((req, res) => {handleGetDebt_f(req, res, db)}) 
 
 
 
