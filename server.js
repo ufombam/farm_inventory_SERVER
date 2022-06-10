@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(cors());
 app.use((req, res, next) => {
     if ('OPTIONS' == req.method) {
-        return res.sendStatus(200);
+        return res.status(200);
     } else {
         next();
     }
