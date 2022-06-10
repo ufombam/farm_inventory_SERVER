@@ -22,13 +22,15 @@ const handleRegister = (req, res, db, bcrypt) => {
             }).into('login')
         })
         .then(() => {
-            const users = trx.select('*').from('users')
-            console.log(users)
-            if (!users.length) {
-                return res.status(400).end('unable to register')
-            } else {
-                return res.status(200).json(users[0])
-            }
+            return trx.select('*').from('users')
+            .then(users => {
+                console.log(users)
+                if (!users.length) {
+                    return res.status(400).end('unable to register')
+                } else {
+                    return res.status(200).json(users[0])
+                }
+            })
         })
         .then(trx.commit)
         .catch(trx.rollback)
