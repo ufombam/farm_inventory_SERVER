@@ -9,12 +9,14 @@ const handleRegister = (req, res, db, bcrypt) => {
             joined: new Date()
         },['*']).into('users')
         .then(id => {
+            console.log(id)
             return trx.insert({
                 hash: hash,
                 email: email
             }).into('login')
         })
         .then(id => {
+            console.log(id)
             return trx.insert({
                 userid: id[0].id,
                 big: 0,
