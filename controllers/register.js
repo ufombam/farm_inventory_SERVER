@@ -23,6 +23,7 @@ const handleRegister = (req, res, db, bcrypt) => {
         })
         .then(() => {
             const users = trx.select('*').from('users')
+            console.log(users)
             if (!users.length) {
                 return res.status(400).end('unable to register')
             } else {
