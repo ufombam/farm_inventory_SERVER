@@ -8,23 +8,25 @@ const handleRegister = (req, res, db, bcrypt) => {
             email: email,
             joined: new Date()
         },['*']).into('users')
-        .then(id => {
-            trx.insert({
-                userid: id[0].id,
+        .then(users => {
+            return trx.insert({
+                userid: users[0].id,
                 big: 0,
                 small: 0
             }).into('rate')
+        })
+        .then(() => {
             return trx.insert({
                 hash: hash,
                 email: email
             }).into('login')
         })
-        .then(user => {
-            console.log(user)
-            if (!user.length) {
+        .then(() => {
+            const users = trx.select('*').from('users')
+            if (!users.length) {
                 return res.status(400).end('unable to register')
-            } {
-                return res.status(200).json(user[0])
+            } else {
+                return res.status(200).json(users[0])
             }
         })
         .then(trx.commit)
