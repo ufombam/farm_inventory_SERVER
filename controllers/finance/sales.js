@@ -11,6 +11,7 @@ const handleGetSales_f = (req, res, db) => {
     .then(data => {
         return res.json(data)
     })
+    .then(() => res.status(200))
     .catch((err) => {
         console.log(err)
         return res.status(400).json('unable to complete request')
@@ -28,6 +29,7 @@ const handlePostSales_f = (req, res, db) => {
         small: small,
         userid: user
     }).into('sales')
+    .then(() => res.status(200))
     .catch((err) => {
         console.log(err)
         return res.status(400).json('unable to complete request')

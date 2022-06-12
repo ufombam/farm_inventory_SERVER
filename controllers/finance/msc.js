@@ -11,6 +11,7 @@ const handleGetMsc_f = (req, res, db) => {
     .then(data => {
         return res.json(data)
     })
+    .then(() => res.status(200))
     .catch((err) => {
         console.log(err)
         return res.status(400).json('unable to complete request')

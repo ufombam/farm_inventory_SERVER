@@ -2,7 +2,7 @@ const handleGetSales = (req, res, db) => {
     const { user } = req.params;
     db.select('id', 'date', 'big', 'small').from('sales').orderBy('id').where('userid', '=', user)
     .then(data => {
-        return res.json(data)
+        return res.status(200).json(data)
     })
     .catch((err) => {
         console.log(err)

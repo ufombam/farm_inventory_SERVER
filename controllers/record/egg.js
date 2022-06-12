@@ -2,7 +2,7 @@ const handleGetEgg = (req, res, db) => {
     const { user } = req.params;
     db.select('*').from('egg_records').orderBy('id').where('userid', '=', user)  
     .then(data => {
-        return res.json(data)
+        return res.status(200).json(data)
     })
     .catch((err) => {
         console.log(err)

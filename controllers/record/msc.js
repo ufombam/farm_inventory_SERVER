@@ -2,7 +2,7 @@ const handleGetMsc = (req, res, db) => {
     const { user } = req.params;
     db.select('*').from('miscellaneous').orderBy('id').where('userid', '=', user)
     .then(data => {
-        return res.json(data)
+        return res.status(200).json(data)
     })
     .catch((err) => {
         console.log(err)
@@ -21,6 +21,7 @@ const handlePostMsc = (req, res, db) => {
         description: description, 
         userid: user
     }).into('miscellaneous')
+    .then(() => res.status(200))
     .catch((err) => {
         console.log(err)
         return res.status(400).json('unable to complete request')
