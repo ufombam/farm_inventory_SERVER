@@ -4,6 +4,7 @@ const handleGetCustomers = (req, res, db) => {
     .then(data => {
         return res.json(data)
     })
+    .then(() => res.status(200))
     .catch((err) => {
         console.log(err)
         return res.status(400).json('unable to complete request')
@@ -36,6 +37,7 @@ const handlePutCustomers = (req, res, db) => {
         purchases: qty,
         debt: debt,
     })
+    .then(() => res.status(200))
     .catch((err) => {
         console.log(err)
         return res.status(400).json('unable to complete request')
@@ -48,6 +50,7 @@ const handleDeleteCustomers = (req, res, db) => {
     db('customers')
     .where('name', '=', name, 'AND', 'userid', '=', user)
     .del()
+    .then(() => res.status(200))
     .catch((err) => {
         console.log(err)
         return res.status(400).json('operation failed')
