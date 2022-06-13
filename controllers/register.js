@@ -1,11 +1,13 @@
 const handleRegister = (req, res, db, bcrypt) => {
-    const { name, email, pwd } = req.body;
+    const { name, email, pwd, country, state } = req.body;
     const salt = 10;
     const hash = bcrypt.hashSync(pwd, salt);
     db.transaction(trx => {
         return trx.insert({
             name: name,
             email: email,
+            country: country,
+            state: state,
             joined: new Date()
         },['*']).into('users')
         .then(users => {

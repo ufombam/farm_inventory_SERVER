@@ -21,7 +21,7 @@ const handlePostMsc = (req, res, db) => {
         description: description, 
         userid: user
     }).into('miscellaneous')
-    .then(() => res.status(200))
+    .then(() => res.status(200).json('success'))
     .catch((err) => {
         console.log(err)
         return res.status(400).json('unable to complete request')
