@@ -23,10 +23,10 @@ const { handleGetDebt_f } = require('./controllers/finance/debt');
 const db = knex({
     client: 'pg',
     connection: {
-        connectionString : process.env.DATABASE_URL,
-        ssl: {
-            rejectUnauthorized: false
-        }
+        host     : process.env.RDS_HOSTNAME,
+        user     : process.env.RDS_USERNAME,
+        password : process.env.RDS_PASSWORD,
+        port     : process.env.RDS_PORT
     }
 });
 const app = express();
