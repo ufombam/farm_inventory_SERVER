@@ -23,10 +23,10 @@ const { handleGetDebt_f } = require('./controllers/finance/debt');
 const db = knex({
     client: 'pg',
     connection: {
-        host     : process.env.RDS_HOSTNAME,
-        user     : process.env.RDS_USERNAME,
-        password : process.env.RDS_PASSWORD,
-        port     : process.env.RDS_PORT
+        host     : 'poultry-1.ciqnujujnaiy.us-east-1.rds.amazonaws.com',
+        user     : 'postgres',
+        password : 'qPm07g7Q4H38tvdNT6B7',
+        port     : '5433'
     }
 });
 const app = express();
@@ -45,8 +45,7 @@ app.use(function(req, res, next) {
     }
 });
 
-
-app.get('/', (req, res) => res.send('App is working'))
+app.get('/', (req, res) => res.json('App is working'))
 
 //======================== ENDPOINT FOR SIGN-IN=======================
 app.route('/signin')
