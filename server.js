@@ -45,7 +45,7 @@ app.use(function(req, res, next) {
     }
 });
 
-app.get('/', (req, res) => res.status(200).json('App is working'))
+app.get('/', (req, res) => res.status(200).json('App is working'));
 
 //======================== ENDPOINT FOR SIGN-IN=======================
 app.route('/signin')
